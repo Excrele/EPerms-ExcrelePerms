@@ -1,0 +1,6 @@
+com\excrele\RankDemoteEvent.class
+com\example\ecore\ExcrelePermsListener.class
+com\excrele\RankAddEvent.class
+com\excrele\RankReloadEvent.class
+com\excrele\ExcrelePerms.class
+com\excrele\RankPromoteEvent.class

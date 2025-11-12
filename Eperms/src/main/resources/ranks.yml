@@ -1,0 +1,144 @@
+# ExcrelePerms Configuration
+# This file defines ranks, permissions, and player assignments for the ExcrelePerms plugin.
+# Ranks are categorized into Player Ranks, Donation Ranks, Staff Ranks, and Creator Ranks for clarity.
+# Each rank includes permissions, inheritance, and display information (prefix).
+# Use permission nodes like 'essentials.*' for plugins like EssentialsX, or negate permissions with a leading '-'.
+# Progression tracks define the order for promoting/demoting players.
+
+ranks:
+  # --- Player Ranks ---
+  # These ranks are for regular players, typically assigned upon joining or through progression.
+  default:
+    default: true
+    permissions:
+      - essentials.help
+      - essentials.helpop
+      - essentials.list
+      - essentials.motd
+      - essentials.rules
+      - essentials.spawn
+    inheritance: []
+    info:
+      prefix: '&e'
+      build: false
+      suffix: ''
+  member:
+    default: false
+    permissions:
+      - essentials.afk
+      - essentials.back.ondeath
+      - essentials.balance
+      - essentials.home
+      - essentials.sethome
+      - essentials.tpa
+      - essentials.tpaccept
+      - essentials.tpdeny
+      - essentials.warp
+      - essentials.warp.list
+    inheritance:
+      - default
+    info:
+      prefix: '&2[Member]&f '
+      build: true
+      suffix: ''
+
+  # --- Donation Ranks ---
+  # These ranks are for players who have donated, offering cosmetic or minor gameplay perks.
+  vip:
+    default: false
+    permissions:
+      - essentials.fly
+      - essentials.kits.vip
+      - essentials.sethome.multiple.vip
+      - essentials.nick
+    inheritance:
+      - member
+    info:
+      prefix: '&6[VIP]&f '
+      build: true
+      suffix: ''
+  elite:
+    default: false
+    permissions:
+      - essentials.kits.elite
+      - essentials.sethome.multiple.elite
+      - essentials.firework
+    inheritance:
+      - vip
+    info:
+      prefix: '&b[Elite]&f '
+      build: true
+      suffix: ''
+
+  # --- Staff Ranks ---
+  # These ranks are for server moderators and administrators with elevated permissions.
+  moderator:
+    default: false
+    permissions:
+      - essentials.kick
+      - essentials.mute
+      - essentials.ban
+      - essentials.tempban
+      - essentials.togglejail
+      - excreleperms.listgroups
+      - excreleperms.manuadd
+      - excreleperms.manpromote
+      - excreleperms.mandemote
+    inheritance:
+      - member
+    info:
+      prefix: '&5[Moderator]&f '
+      build: true
+      suffix: ''
+  admin:
+    default: false
+    permissions:
+      - essentials.*
+      - excreleperms.*
+      - -excreleperms.mantogglesave
+    inheritance:
+      - moderator
+    info:
+      prefix: '&c[Admin]&f '
+      build: true
+      suffix: ''
+
+  # --- Creator Ranks ---
+  # These ranks are for server owners or content creators with full control.
+  owner:
+    default: false
+    permissions:
+      - '*'
+    inheritance:
+      - admin
+    info:
+      prefix: '&4[Owner]&f '
+      build: true
+      suffix: ''
+  creator:
+    default: false
+    permissions:
+      - essentials.gamemode
+      - essentials.give
+      - essentials.spawnmob
+    inheritance:
+      - admin
+    info:
+      prefix: '&3[Creator]&f '
+      build: true
+      suffix: ''
+
+# Progression Tracks
+# Defines the order for promoting/demoting players using /rank promote or /rank demote.
+progression-tracks:
+  defaultTrack:
+    - default
+    - member
+    - vip
+    - elite
+
+# Player Assignments
+# Maps player UUIDs to their assigned ranks.
+players:
+# Example: 'player-uuid': { rank: 'rank-name' }
+# Use /rank add <player> <rank> to assign ranks in-game

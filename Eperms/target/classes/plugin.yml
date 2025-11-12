@@ -1,0 +1,13 @@
+name: ExcrelePerms
+version: 1.0
+main: com.excrele.ExcrelePerms
+api-version: 1.21
+commands:
+  rank:
+    description: Manage ranks and permissions
+    usage: /<command> <add|assign|promote|demote|reload> [args]
+    permission: excreleperms.use
+permissions:
+  excreleperms.use:
+    description: Allows use of rank management commands
+    default: op
