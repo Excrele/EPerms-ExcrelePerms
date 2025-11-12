@@ -8,6 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.ChatColor;
+import org.bukkit.event.Listener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,13 +20,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ExcrelePerms extends JavaPlugin {
+public class ExcrelePerms extends JavaPlugin implements Listener {
     private File configFile;
     private FileConfiguration ranksConfig;
     private Map<UUID, PermissionAttachment> playerPermissions;
 
     @Override
     public void onEnable() {
+        // Register as event listener
+        getServer().getPluginManager().registerEvents(this, this);
+
         // Initialize configuration
         configFile = new File(getDataFolder(), "ranks.yml");
         if (!configFile.exists()) {
@@ -86,6 +93,43 @@ public class ExcrelePerms extends JavaPlugin {
             }
         }
         return false;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        String rank = ranksConfig.getString("players." + player.getUniqueId() + ".rank", "default");
+        String prefix = ranksConfig.getString("ranks." + rank + ".info.prefix", "");
+        String suffix = ranksConfig.getString("ranks." + rank + ".info.suffix", "");
+
+        // Translate color codes
+        prefix = ChatColor.translateAlternateColorCodes('&', prefix);
+        suffix = ChatColor.translateAlternateColorCodes('&', suffix);
+
+        // Set custom join message with prefix and suffix
+        String joinMessage = prefix + player.getName() + suffix + " joined the game";
+        event.setJoinMessage(joinMessage);
+
+        // Load permissions and display name
+        loadPlayerPermissions(player);
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        String rank = ranksConfig.getString("players." + player.getUniqueId() + ".rank", "default");
+        String prefix = ranksConfig.getString("ranks." + rank + ".info.prefix", "");
+        String suffix = ranksConfig.getString("ranks." + rank + ".info.suffix", "");
+
+        // Translate color codes
+        prefix = ChatColor.translateAlternateColorCodes('&', prefix);
+        suffix = ChatColor.translateAlternateColorCodes('&', suffix);
+
+        // Build full name with prefix and suffix
+        String fullName = prefix + player.getName() + suffix;
+
+        // Set format: fullName + ": %s" (message placeholder)
+        event.setFormat(fullName + ": %s");
     }
 
     private boolean addPlayerToRank(CommandSender sender, String playerName, String rank) {
@@ -205,7 +249,7 @@ public class ExcrelePerms extends JavaPlugin {
             }
         }
 
-        // Set prefix
+        // Set prefix for display name (tab list and above head)
         String prefix = ranksConfig.getString("ranks." + rank + ".info.prefix", "");
         player.setDisplayName(ChatColor.translateAlternateColorCodes('&', prefix + player.getName()));
     }
