@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,12 +111,12 @@ public class ExcrelePerms extends JavaPlugin implements Listener {
         String joinMessage = prefix + player.getName() + suffix + " joined the game";
         event.setJoinMessage(joinMessage);
 
-        // Load permissions and display name
+        // Load permissions and display name (prefix only, suffix for chat)
         loadPlayerPermissions(player);
     }
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         String rank = ranksConfig.getString("players." + player.getUniqueId() + ".rank", "default");
         String prefix = ranksConfig.getString("ranks." + rank + ".info.prefix", "");
@@ -125,11 +126,34 @@ public class ExcrelePerms extends JavaPlugin implements Listener {
         prefix = ChatColor.translateAlternateColorCodes('&', prefix);
         suffix = ChatColor.translateAlternateColorCodes('&', suffix);
 
-        // Build full name with prefix and suffix
-        String fullName = prefix + player.getName() + suffix;
+        // Set custom quit message with prefix and suffix
+        String quitMessage = prefix + player.getName() + suffix + " left the game";
+        event.setQuitMessage(quitMessage);
+    }
 
-        // Set format: fullName + ": %s" (message placeholder)
-        event.setFormat(fullName + ": %s");
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        String rank = ranksConfig.getString("players." + player.getUniqueId() + ".rank", "default");
+        String prefix = ranksConfig.getString("ranks." + rank + ".info.prefix", "");
+        String suffix = ranksConfig.getString("ranks." + rank + ".info.suffix", "");
+
+        // Translate color codes
+        prefix = ChatColor.translateAlternateColorCodes('&', prefix);
+        suffix = ChatColor.translateAlternateColorCodes('&', suffix);
+
+        // Build formatted message
+        String formattedMessage = prefix + player.getName() + suffix + ": " + event.getMessage();
+
+        // Cancel the event and manually broadcast to recipients
+        event.setCancelled(true);
+        for (CommandSender recipient : event.getRecipients()) {
+            recipient.sendMessage(formattedMessage);
+        }
     }
 
     private boolean addPlayerToRank(CommandSender sender, String playerName, String rank) {
@@ -249,7 +273,7 @@ public class ExcrelePerms extends JavaPlugin implements Listener {
             }
         }
 
-        // Set prefix for display name (tab list and above head)
+        // Set prefix for display name (tab list and above head) - no suffix here
         String prefix = ranksConfig.getString("ranks." + rank + ".info.prefix", "");
         player.setDisplayName(ChatColor.translateAlternateColorCodes('&', prefix + player.getName()));
     }
