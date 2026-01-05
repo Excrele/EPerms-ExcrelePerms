@@ -5,9 +5,155 @@ api-version: 1.21
 commands:
   rank:
     description: Manage ranks and permissions
-    usage: /<command> <add|assign|promote|demote|reload> [args]
+    usage: /<command> <add|assign|promote|demote|reload|list|info|check|backup|validate|export|import|history|format|create|delete|edit|clone|temp|track|permission|inherit|files|logs|comment|setpriority|priority|bulk|tag|setcolor|requirements|setexpiry|batch|cache|gui|buy|help> [args]
     permission: excreleperms.use
+    aliases: [ranks, r]
 permissions:
+  excreleperms.*:
+    description: Grants all ExcrelePerms permissions
+    default: op
+    children:
+      excreleperms.use: true
+      excreleperms.add: true
+      excreleperms.promote: true
+      excreleperms.demote: true
+      excreleperms.reload: true
+      excreleperms.list: true
+      excreleperms.info: true
+      excreleperms.check: true
+      excreleperms.backup: true
+      excreleperms.validate: true
+      excreleperms.export: true
+      excreleperms.import: true
+      excreleperms.history: true
+      excreleperms.format: true
+      excreleperms.create: true
+      excreleperms.delete: true
+      excreleperms.edit: true
+      excreleperms.clone: true
+      excreleperms.temp: true
+      excreleperms.track: true
+      excreleperms.permission: true
+      excreleperms.inherit: true
+      excreleperms.files: true
+      excreleperms.logs: true
+      excreleperms.comment: true
+      excreleperms.priority: true
+      excreleperms.bulk: true
+      excreleperms.tag: true
+      excreleperms.color: true
+      excreleperms.requirements: true
+      excreleperms.expiry: true
+      excreleperms.batch: true
+      excreleperms.cache: true
+      excreleperms.gui: true
+      excreleperms.buy: true
+      excreleperms.price: true
   excreleperms.use:
     description: Allows use of rank management commands
+    default: op
+  excreleperms.add:
+    description: Allows adding/assigning ranks to players
+    default: op
+  excreleperms.promote:
+    description: Allows promoting players
+    default: op
+  excreleperms.demote:
+    description: Allows demoting players
+    default: op
+  excreleperms.reload:
+    description: Allows reloading the configuration
+    default: op
+  excreleperms.list:
+    description: Allows listing available ranks
+    default: true
+  excreleperms.info:
+    description: Allows viewing rank information
+    default: true
+  excreleperms.check:
+    description: Allows checking player ranks
+    default: true
+  excreleperms.backup:
+    description: Allows managing backups
+    default: op
+  excreleperms.validate:
+    description: Allows validating configuration
+    default: op
+  excreleperms.export:
+    description: Allows exporting data
+    default: op
+  excreleperms.import:
+    description: Allows importing data
+    default: op
+  excreleperms.history:
+    description: Allows viewing rank history
+    default: op
+  excreleperms.format:
+    description: Allows formatting YAML files
+    default: op
+  excreleperms.create:
+    description: Allows creating ranks
+    default: op
+  excreleperms.delete:
+    description: Allows deleting ranks
+    default: op
+  excreleperms.edit:
+    description: Allows editing ranks
+    default: op
+  excreleperms.clone:
+    description: Allows cloning ranks
+    default: op
+  excreleperms.temp:
+    description: Allows managing temporary ranks
+    default: op
+  excreleperms.track:
+    description: Allows managing progression tracks
+    default: op
+  excreleperms.permission:
+    description: Allows managing rank permissions
+    default: op
+  excreleperms.inherit:
+    description: Allows managing rank inheritance
+    default: op
+  excreleperms.files:
+    description: Allows splitting/merging YAML files
+    default: op
+  excreleperms.logs:
+    description: Allows viewing and exporting logs
+    default: op
+  excreleperms.comment:
+    description: Allows managing rank comments
+    default: op
+  excreleperms.priority:
+    description: Allows setting rank priority
+    default: op
+  excreleperms.bulk:
+    description: Allows bulk operations
+    default: op
+  excreleperms.tag:
+    description: Allows managing rank tags
+    default: op
+  excreleperms.color:
+    description: Allows setting rank colors
+    default: op
+  excreleperms.requirements:
+    description: Allows managing rank requirements
+    default: op
+  excreleperms.expiry:
+    description: Allows setting rank expiry
+    default: op
+  excreleperms.batch:
+    description: Allows batch mode operations
+    default: op
+  excreleperms.cache:
+    description: Allows managing cache
+    default: op
+  excreleperms.gui:
+    description: Allows using the rank GUI
+    default: true
+  excreleperms.buy:
+    description: Allows purchasing ranks
+    default: true
+  excreleperms.price:
+    description: Allows setting rank prices
     default: op

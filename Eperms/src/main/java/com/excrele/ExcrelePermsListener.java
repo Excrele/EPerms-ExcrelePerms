@@ -1,9 +1,5 @@
-package com.example.ecore;
+package com.excrele;
 
-import com.excrele.RankAddEvent;
-import com.excrele.RankPromoteEvent;
-import com.excrele.RankDemoteEvent;
-import com.excrele.RankReloadEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
